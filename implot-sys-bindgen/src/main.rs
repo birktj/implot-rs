@@ -19,12 +19,6 @@ fn main() {
 
     let bindings = Builder::default()
         .header(
-            cimgui_include_path
-                .join("cimgui.h")
-                .to_str()
-                .expect("Could not convert cimgui.h path to string"),
-        )
-        .header(
             sys_crate_path
                 .join("third-party")
                 .join("cimplot")
@@ -34,6 +28,7 @@ fn main() {
         )
         .parse_callbacks(Box::new(CargoCallbacks))
         .clang_arg("-DCIMGUI_DEFINE_ENUMS_AND_STRUCTS=1")
+        .clang_arg(format!("-I{}", cimgui_include_path.display()))
         // Reuse the imgui types that implot requires from imgui_sys so we don't define
         // our own new types.
         .raw_line("pub use imgui_sys::{ImVec2, ImVec4, ImGuiCond, ImTextureID};")
